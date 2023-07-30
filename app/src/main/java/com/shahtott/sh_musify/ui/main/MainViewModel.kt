@@ -33,7 +33,8 @@ class MainViewModel @Inject constructor(private val application: Application) : 
     }
 
 
-    fun fetchMusic(): ArrayList<AudioModel> = application.fetchMusicFromDevice()
-
+    fun fetchMusic() {
+        _audioList.postValue(application.fetchMusicFromDevice())
+    }
 
 }

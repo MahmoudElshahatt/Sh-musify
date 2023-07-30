@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackgroundBorderless"
+    android:background="@drawable/ripple_effect"
     android:clickable="true"
+    android:focusable="true"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -23,11 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/ripple_effect"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/ripple_effect"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -35,10 +38,13 @@
                 android:id="@+id/txt_song_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:layout_weight=".8"
+                android:background="@drawable/ripple_effect"
                 android:ellipsize="end"
                 android:lineSpacingMultiplier="1"
                 android:maxLines="2"
+                android:textAlignment="viewStart"
                 android:textColor="@color/accent_color"
                 android:textSize="18sp"
                 tools:text="Song Name" />
@@ -47,6 +53,7 @@
                 android:id="@+id/txt_song_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/ripple_effect"
                 android:textColor="@color/secondry_color"
                 android:textSize="14sp"
                 tools:text="1:02" />
@@ -57,6 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:background="@drawable/ripple_effect"
+            android:textAlignment="viewStart"
             android:textColor="@color/secondry_color"
             android:textSize="15sp"
             tools:text="Song artist" />

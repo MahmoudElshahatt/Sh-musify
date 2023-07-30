@@ -1,6 +1,7 @@
 package com.shahtott.sh_musify.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,14 @@ import com.shahtott.sh_musify.common.core.BaseFragment
 import com.shahtott.sh_musify.common.handler.checkMusicPermissions
 import com.shahtott.sh_musify.common.handler.onPermissionResult
 import com.shahtott.sh_musify.databinding.FragmentMainBinding
+import com.shahtott.sh_musify.ui.main.adapter.SongsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
     private val viewModel: MainViewModel by viewModels()
+    private val songsAdapter: SongsAdapter = SongsAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,21 +26,20 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpAdapter()
         checkMusicPermissions(onPermissionGranted = {
             viewModel.fetchMusic()
         })
         observations()
+    }
+
+    private fun setUpAdapter() {
+        binding.rvMain.apply {
+            adapter = songsAdapter
+        }
     }
 
 
@@ -61,7 +63,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     private fun observations() {
         viewModel.audioList.observe(viewLifecycleOwner) {
             //  Log.e("AudioList", it.toString())
-
+            songsAdapter.submitList(it)
         }
     }
 

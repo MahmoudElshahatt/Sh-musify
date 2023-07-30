@@ -1,8 +1,11 @@
 package com.shahtott.sh_musify.common.handler
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.ContentResolver
 import android.content.ContentUris
+import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
@@ -14,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.shahtott.sh_musify.models.AudioModel
 import java.io.File
 
-private val READ_STORAGE_PERMISSION_REQUEST_CODE = 123
+private const val READ_STORAGE_PERMISSION_REQUEST_CODE = 123
 fun Fragment.checkMusicPermissions(
     onPermissionGranted: () -> Unit
 ) {
@@ -83,9 +86,9 @@ fun Application.fetchMusicFromDevice(): ArrayList<AudioModel> {
         val idColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
         val titleColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
         val artistColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-        val duration = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+        //val durationColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
         val dataColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
-        val albumArt = it.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ART)
+//        val albumArtColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ART)
 
 
         while (it.moveToNext()) {
@@ -93,14 +96,46 @@ fun Application.fetchMusicFromDevice(): ArrayList<AudioModel> {
             val title = it.getString(titleColumn)
             val artist = it.getString(artistColumn)
             val data = it.getString(dataColumn)
+         //   val duration =it.getString(durationColumn)
+         //   val albumArt =it.getString(albumArtColumn)
 
             val mediaFile = File(data)
             if (!mediaFile.path.contains("WhatsApp/Media")) {
                 Log.e("MusicFetch", "ID: $id, Title: $title, Artist: $artist, Data: $data")
-                musicList.add(AudioModel(id, data, title, duration, artist, albumArt))
+                musicList.add(AudioModel(id, data, title, artist))
             }
         }
     }
 
     return musicList
+}
+
+
+
+@SuppressLint("Range")
+fun getSongDuration(context: Context, audioUri: String): Long {
+    val contentResolver: ContentResolver = context.contentResolver
+    val projection = arrayOf(MediaStore.Audio.Media.DURATION)
+    val selection = "${MediaStore.Audio.Media.DATA} = ?"
+    val selectionArgs = arrayOf(audioUri)
+    contentResolver.query(
+        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+        projection,
+        selection,
+        selectionArgs,
+        null
+    )?.use { cursor ->
+        if (cursor.moveToFirst()) {
+            val duration =
+                cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION))
+            return duration
+        }
+    }
+    return 0L
+}
+
+fun formatDurationToMinutesSeconds(durationMillis: Long): String {
+    val minutes = (durationMillis / 1000) / 60
+    val seconds = (durationMillis / 1000) % 60
+    return String.format("%02d:%02d", minutes, seconds)
 }

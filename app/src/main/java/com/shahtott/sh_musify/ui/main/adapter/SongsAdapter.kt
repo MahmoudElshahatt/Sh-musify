@@ -1,14 +1,19 @@
 package com.shahtott.sh_musify.ui.main.adapter
 
+import android.annotation.SuppressLint
+import android.content.ContentResolver
+import android.content.Context
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.shahtott.sh_musify.common.handler.formatDurationToMinutesSeconds
+import com.shahtott.sh_musify.common.handler.getSongDuration
 import com.shahtott.sh_musify.common.handler.loadAlbumArt
 import com.shahtott.sh_musify.databinding.ItemSongBinding
 import com.shahtott.sh_musify.models.AudioModel
-import java.math.RoundingMode
 
 class SongsAdapter(
     private var onSongClicked: ((AudioModel) -> Unit)? = null
@@ -28,7 +33,8 @@ class SongsAdapter(
             loadAlbumArt(audio.id, binding.imgSong)
             binding.apply {
                 txtSongName.text = audio.title
-                txtSongDuration.text = audio.duration.toString()
+                val durationInMillis = getSongDuration(itemView.context, audio.data)
+                txtSongDuration.text = formatDurationToMinutesSeconds(durationInMillis)
                 txtSongArtist.text = audio.artist
             }
         }
