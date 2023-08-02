@@ -7,13 +7,18 @@ import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.shahtott.sh_musify.models.AudioModel
 import java.io.File
 
@@ -57,12 +62,6 @@ fun onPermissionResult(
 }
 
 
-fun loadAlbumArt(albumId: Long, view: ImageView) {
-    val artworkUri: Uri = Uri.parse("content://media/external/audio/albumart")
-    val path: Uri = ContentUris.withAppendedId(artworkUri, albumId)
-    Glide.with(view.context).load(path).into(view)
-}
-
 fun Application.fetchMusicFromDevice(): ArrayList<AudioModel> {
     val musicList = ArrayList<AudioModel>()
     val projection = arrayOf(
@@ -96,8 +95,8 @@ fun Application.fetchMusicFromDevice(): ArrayList<AudioModel> {
             val title = it.getString(titleColumn)
             val artist = it.getString(artistColumn)
             val data = it.getString(dataColumn)
-         //   val duration =it.getString(durationColumn)
-         //   val albumArt =it.getString(albumArtColumn)
+            //   val duration =it.getString(durationColumn)
+            //   val albumArt =it.getString(albumArtColumn)
 
             val mediaFile = File(data)
             if (!mediaFile.path.contains("WhatsApp/Media")) {
@@ -109,7 +108,6 @@ fun Application.fetchMusicFromDevice(): ArrayList<AudioModel> {
 
     return musicList
 }
-
 
 
 @SuppressLint("Range")
@@ -138,4 +136,46 @@ fun formatDurationToMinutesSeconds(durationMillis: Long): String {
     val minutes = (durationMillis / 1000) / 60
     val seconds = (durationMillis / 1000) % 60
     return String.format("%02d:%02d", minutes, seconds)
+}
+
+fun Context.getAlbumArt(uri: Uri): String? {
+    try {
+        val retriever = MediaMetadataRetriever()
+        retriever.setDataSource(this, uri)
+        val albumArt: ByteArray? = retriever.embeddedPicture
+        retriever.release()
+
+        if (albumArt != null) {
+            return Base64.encodeToString(albumArt, Base64.DEFAULT)
+        }
+    } catch (e: Exception) {
+        Log.e("AlbumArt", "Error getting album art: ${e.message}")
+    }
+
+    return null
+}
+
+fun Context.getSongUri(songId: Long): Uri? {
+    val contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+    val projection = arrayOf(MediaStore.Audio.Media.DATA)
+    val selection = MediaStore.Audio.Media._ID + " = ?"
+    val selectionArgs = arrayOf(songId.toString())
+
+    val cursor = contentResolver.query(contentUri, projection, selection, selectionArgs, null)
+    cursor?.use {
+        if (it.moveToFirst()) {
+            val columnIndex = it.getColumnIndex(MediaStore.Audio.Media.DATA)
+            val path = it.getString(columnIndex)
+            return Uri.parse(path)
+        }
+    }
+    return null
+}
+
+fun ImageView.decodeBase64AndSetImage(base64: String) {
+    val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
+    val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+    Glide.with(context).load(decodedBitmap).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(this)
 }

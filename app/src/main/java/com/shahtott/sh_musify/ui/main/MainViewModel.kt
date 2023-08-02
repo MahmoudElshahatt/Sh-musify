@@ -20,7 +20,8 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val application: Application) : ViewModel() {
+class MainViewModel @Inject constructor
+    (private val application: Application) : ViewModel() {
 
     private val list: MutableList<AudioModel> = mutableListOf()
 
