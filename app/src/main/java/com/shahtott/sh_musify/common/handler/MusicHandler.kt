@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.shahtott.sh_musify.R
 import com.shahtott.sh_musify.models.AudioModel
 import java.io.File
 
@@ -138,22 +139,6 @@ fun formatDurationToMinutesSeconds(durationMillis: Long): String {
     return String.format("%02d:%02d", minutes, seconds)
 }
 
-fun Context.getAlbumArt(uri: Uri): String? {
-    try {
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(this, uri)
-        val albumArt: ByteArray? = retriever.embeddedPicture
-        retriever.release()
-
-        if (albumArt != null) {
-            return Base64.encodeToString(albumArt, Base64.DEFAULT)
-        }
-    } catch (e: Exception) {
-        Log.e("AlbumArt", "Error getting album art: ${e.message}")
-    }
-
-    return null
-}
 
 fun Context.getSongUri(songId: Long): Uri? {
     val contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
@@ -172,10 +157,28 @@ fun Context.getSongUri(songId: Long): Uri? {
     return null
 }
 
+fun Context.getAlbumArt(uri: Uri): String? {
+    try {
+        val retriever = MediaMetadataRetriever()
+        retriever.setDataSource(this, uri)
+        val albumArt: ByteArray? = retriever.embeddedPicture
+        retriever.release()
+
+        if (albumArt != null) {
+            return Base64.encodeToString(albumArt, Base64.DEFAULT)
+        }
+    } catch (e: Exception) {
+        Log.e("AlbumArt", "Error getting album art: ${e.message}")
+    }
+
+    return null
+}
+
 fun ImageView.decodeBase64AndSetImage(base64: String) {
     val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
     val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
 
-    Glide.with(context).load(decodedBitmap).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL)
+    Glide.with(context).load(decodedBitmap).centerCrop().error(R.drawable.ic_music)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into(this)
 }
