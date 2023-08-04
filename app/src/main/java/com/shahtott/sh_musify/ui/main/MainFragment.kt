@@ -1,15 +1,11 @@
 package com.shahtott.sh_musify.ui.main
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.shahtott.sh_musify.R
 import com.shahtott.sh_musify.common.core.BaseFragment
-import com.shahtott.sh_musify.common.handler.checkMusicPermissions
-import com.shahtott.sh_musify.common.handler.onPermissionResult
+import com.shahtott.sh_musify.common.handler.MusicHandler.checkMusicPermissions
+import com.shahtott.sh_musify.common.handler.MusicHandler.onPermissionResult
 import com.shahtott.sh_musify.databinding.FragmentMainBinding
 import com.shahtott.sh_musify.ui.main.adapter.SongsAdapter
 import dagger.hilt.android.AndroidEntryPoint

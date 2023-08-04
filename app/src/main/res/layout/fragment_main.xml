@@ -40,7 +40,7 @@
             android:layout_marginBottom="24dp"
             android:text="Hey! Let's play some Music"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

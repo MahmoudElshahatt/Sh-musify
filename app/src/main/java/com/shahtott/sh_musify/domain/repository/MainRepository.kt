@@ -1,4 +1,4 @@
-package com.shahtott.sh_musify.domain
+package com.shahtott.sh_musify.domain.repository
 
 import javax.inject.Singleton
 

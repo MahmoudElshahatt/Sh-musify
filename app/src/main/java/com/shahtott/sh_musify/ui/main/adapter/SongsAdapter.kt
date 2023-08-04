@@ -1,18 +1,18 @@
 package com.shahtott.sh_musify.ui.main.adapter
 
-import android.graphics.BitmapFactory
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.shahtott.sh_musify.common.handler.*
+import com.shahtott.sh_musify.common.handler.AudioModel
+import com.shahtott.sh_musify.common.handler.MusicHandler.decodeBase64AndSetImage
+import com.shahtott.sh_musify.common.handler.MusicHandler.formatDurationToMinutesSeconds
+import com.shahtott.sh_musify.common.handler.MusicHandler.getAlbumArt
+import com.shahtott.sh_musify.common.handler.MusicHandler.getSongDuration
+import com.shahtott.sh_musify.common.handler.MusicHandler.getSongUri
 import com.shahtott.sh_musify.databinding.ItemSongBinding
-import com.shahtott.sh_musify.models.AudioModel
 
 class SongsAdapter(
     private var onSongClicked: ((AudioModel) -> Unit)? = null
