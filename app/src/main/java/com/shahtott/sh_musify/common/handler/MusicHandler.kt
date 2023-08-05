@@ -133,7 +133,8 @@ object MusicHandler {
         val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
         val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
 
-        Glide.with(context).load(decodedBitmap).centerCrop().error(R.drawable.ic_music)
+        Glide.with(context).load(decodedBitmap).placeholder(R.drawable.ic_music_white).centerCrop()
+            .error(R.drawable.ic_music_white)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(this)
     }

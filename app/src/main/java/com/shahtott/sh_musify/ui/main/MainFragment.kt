@@ -19,16 +19,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        checkMusicPermissions(onPermissionGranted = {
+            viewModel.fetchMusic()
+        })
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpAdapter()
-        checkMusicPermissions(onPermissionGranted = {
-            viewModel.fetchMusic()
-        })
         observations()
     }
 

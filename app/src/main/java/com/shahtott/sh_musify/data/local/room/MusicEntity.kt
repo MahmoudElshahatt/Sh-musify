@@ -1,4 +1,4 @@
-package com.shahtott.sh_musify.data.local
+package com.shahtott.sh_musify.data.local.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
