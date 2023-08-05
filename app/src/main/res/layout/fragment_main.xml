@@ -36,8 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginVertical="20dp"
+
             android:text="Hey! Let's play some Music"
             android:textColor="#ACA9A9"
             android:textSize="16sp"
