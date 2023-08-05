@@ -28,7 +28,7 @@ class AppModule {
             appContext,
             MusicDataBase::class.java,
             "music-db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
 

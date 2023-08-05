@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
@@ -18,6 +19,10 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.shahtott.sh_musify.R
+import com.shahtott.sh_musify.common.handler.MusicHandler.decodeBase64
+import com.shahtott.sh_musify.common.handler.MusicHandler.getAlbumArt
+import com.shahtott.sh_musify.common.handler.MusicHandler.getSongUri
+import com.shahtott.sh_musify.data.local.room.MusicEntity
 import java.io.File
 
 object MusicHandler {
@@ -139,6 +144,13 @@ object MusicHandler {
             .into(this)
     }
 
+    fun decodeBase64AndReturnBitmap(imageBytes: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+    }
+
+    fun decodeBase64(base64: String) = Base64.decode(base64, Base64.DEFAULT)
+
+
     private const val READ_STORAGE_PERMISSION_REQUEST_CODE = 123
     fun Fragment.checkMusicPermissions(
         onPermissionGranted: () -> Unit
@@ -186,3 +198,26 @@ data class AudioModel(
     val artist: String,
     val duration: String = "00:00",
 )
+
+fun List<AudioModel>.toLocalMusicEntities(application: Application): List<MusicEntity> {
+    val convertedData: ArrayList<MusicEntity> = ArrayList()
+    map {
+        val durationInMillis = MusicHandler.getSongDuration(application.applicationContext, it.data)
+        val songUri = application.applicationContext.getSongUri(it.id)
+        var finalAlbumArt: ByteArray = byteArrayOf()
+        songUri?.let {
+            val base64 = application.applicationContext.getAlbumArt(songUri) ?: ""
+            finalAlbumArt = decodeBase64(base64)
+        }
+        convertedData.add(
+            MusicEntity(
+                data = it.data,
+                title = it.title,
+                artist = it.artist,
+                duration = MusicHandler.formatDurationToMinutesSeconds(durationInMillis),
+                imageBytes = finalAlbumArt
+            )
+        )
+    }
+    return convertedData
+}

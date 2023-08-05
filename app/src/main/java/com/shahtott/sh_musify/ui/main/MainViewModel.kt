@@ -3,20 +3,24 @@ package com.shahtott.sh_musify.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.shahtott.sh_musify.common.handler.AudioModel
+import com.shahtott.sh_musify.data.local.room.MusicEntity
 import com.shahtott.sh_musify.domain.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
-class MainViewModel @Inject constructor
-    (
+class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository,
 ) : ViewModel() {
 
-    private val _audioList: MutableLiveData<MutableList<AudioModel>> = MutableLiveData()
-    val audioList: LiveData<MutableList<AudioModel>> = _audioList
+    private val _audioList: MutableLiveData<List<MusicEntity>> = MutableLiveData()
+    val audioList: LiveData<List<MusicEntity>> = _audioList
 
 
     init {
@@ -25,7 +29,9 @@ class MainViewModel @Inject constructor
 
 
     fun fetchMusic() {
-        _audioList.postValue(mainRepository.fetchMusicFromDevice())
+        viewModelScope.launch {
+            _audioList.postValue(mainRepository.getMusic())
+        }
     }
 
 }

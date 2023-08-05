@@ -9,11 +9,11 @@ import androidx.room.Query
 interface MusicDao {
 
     @Query("SELECT * FROM MusicEntity")
-    fun getAllBooks(): List<MusicEntity>
+    fun getAllMusic(): List<MusicEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBooks(books: List<MusicEntity>)
+    fun insertMusic(books: List<MusicEntity>)
 
     @Query("DELETE FROM MusicEntity")
-    fun deleteBooks()
+    fun deleteMusic()
 }

@@ -1,7 +1,7 @@
 package com.shahtott.sh_musify.common.core
 
 
-interface BaseCacheStrategy<Remote, Local, Extra> {
+interface BaseCacheStrategy<Remote, Local> {
 
     companion object {
         private const val FIRST_PAGE = 1
@@ -9,15 +9,15 @@ interface BaseCacheStrategy<Remote, Local, Extra> {
         private const val DELAY_TIME = 3 * 60 * 60 * 1000L // 3 hours
     }
 
-    suspend fun getFromCache(page: Int, pageSize: Int, extra: Extra): List<Local>
+    suspend fun getFromCache(page: Int, pageSize: Int): List<Local>
 
-    suspend fun clearCachedData(extra: Extra)
+    suspend fun clearCachedData()
 
     suspend fun saveToCache(page: Int, pageSize: Int, data: List<Local>)
 
     fun mapFromRemoteToLocal(remoteData: List<Remote>): List<Local>
 
-    suspend fun fetchFromRemote(page: Int, pageSize: Int, extra: Extra): List<Remote>
+    suspend fun fetchFromRemote(page: Int, pageSize: Int): List<Remote>
 
     suspend fun getLastSaveTime(): Long
 
@@ -30,9 +30,8 @@ interface BaseCacheStrategy<Remote, Local, Extra> {
         page: Int = FIRST_PAGE,
         pageSize: Int = PAGE_SIZE,
         delayTimeToRefreshInMilli: Long = DELAY_TIME,
-        extra: Extra,
     ): List<Local> {
-        val cachedData = getFromCache(page, pageSize, extra)
+        val cachedData = getFromCache(page, pageSize)
         val currentTime = System.currentTimeMillis()
         val lastSaveTime = getLastSaveTime()
 
@@ -41,11 +40,11 @@ interface BaseCacheStrategy<Remote, Local, Extra> {
             || forceToRefresh()
         ) {
             if (page == 1) {
-                clearCachedData(extra)
+                clearCachedData()
             }
-            val remoteData = fetchFromRemote(page, pageSize, extra)
+            val remoteData = fetchFromRemote(page, pageSize)
             saveToCache(page, pageSize, mapFromRemoteToLocal(remoteData))
-            val newCachedData = getFromCache(page, pageSize, extra)
+            val newCachedData = getFromCache(page, pageSize)
             if (newCachedData.isNotEmpty()) {
                 updateLastSaveTime(System.currentTimeMillis())
             }

@@ -1,6 +1,7 @@
 package com.shahtott.sh_musify.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.shahtott.sh_musify.common.core.BaseFragment
@@ -56,8 +57,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     private fun observations() {
         viewModel.audioList.observe(viewLifecycleOwner) {
-            //  Log.e("AudioList", it.toString())
-            songsAdapter.submitList(it)
+             // Log.e("MusicList", it.toString())
+           songsAdapter.submitList(it)
         }
     }
 
