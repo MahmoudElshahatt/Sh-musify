@@ -18,5 +18,9 @@
         android:id="@+id/playingFragment"
         android:name="com.shahtott.sh_musify.ui.playing.PlayingFragment"
         android:label="fragment_playing"
-        tools:layout="@layout/fragment_playing" />
+        tools:layout="@layout/fragment_playing" >
+        <argument
+            android:name="musicId"
+            app:argType="long" />
+    </fragment>
 </navigation>

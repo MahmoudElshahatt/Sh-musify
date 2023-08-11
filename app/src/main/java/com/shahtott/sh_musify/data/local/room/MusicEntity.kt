@@ -1,5 +1,6 @@
 package com.shahtott.sh_musify.data.local.room
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

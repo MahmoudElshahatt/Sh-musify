@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.shahtott.sh_musify.R
 import com.shahtott.sh_musify.common.core.BaseFragment
+import com.shahtott.sh_musify.common.extentions.showContentNormallyUnderStatusBar
 import com.shahtott.sh_musify.common.handler.MusicHandler.checkMusicPermissions
 import com.shahtott.sh_musify.common.handler.MusicHandler.onPermissionResult
 import com.shahtott.sh_musify.databinding.FragmentMainBinding
@@ -15,11 +18,18 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
     private val viewModel: MainViewModel by viewModels()
-    private val songsAdapter: SongsAdapter = SongsAdapter()
+    private val songsAdapter: SongsAdapter = SongsAdapter { musicEntity ->
+        findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToPlayingFragment(
+                musicEntity.id
+            )
+        )
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requireActivity().showContentNormallyUnderStatusBar(R.color.main_color)
         checkMusicPermissions(onPermissionGranted = {
             viewModel.fetchMusic()
         })
@@ -57,8 +67,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     private fun observations() {
         viewModel.audioList.observe(viewLifecycleOwner) {
-             // Log.e("MusicList", it.toString())
-           songsAdapter.submitList(it)
+            // Log.e("MusicList", it.toString())
+            songsAdapter.submitList(it)
         }
     }
 

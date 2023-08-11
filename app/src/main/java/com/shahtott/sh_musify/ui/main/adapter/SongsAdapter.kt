@@ -31,7 +31,7 @@ class SongsAdapter(
         fun bind(audio: MusicEntity) {
             binding.apply {
                 if (audio.imageBytes.isNotEmpty()) {
-                    val imageBytes = decodeBase64AndReturnBitmap(audio.imageBytes )
+                    val imageBytes = decodeBase64AndReturnBitmap(audio.imageBytes)
                     Glide.with(itemView.context).load(imageBytes)
                         .placeholder(R.drawable.ic_music).centerCrop()
                         .error(R.drawable.ic_music)
@@ -46,6 +46,10 @@ class SongsAdapter(
                 val durationInMillis = getSongDuration(itemView.context, audio.data)
                 txtSongDuration.text = formatDurationToMinutesSeconds(durationInMillis)
                 txtSongArtist.text = audio.artist
+
+                binding.cons.setOnClickListener {
+                    onSongClicked?.invoke(audio)
+                }
             }
         }
 
