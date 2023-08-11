@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.shahtott.sh_musify.R
 import com.shahtott.sh_musify.common.core.BaseFragment
 import com.shahtott.sh_musify.common.extentions.showContentAboveStatusBar
-import com.shahtott.sh_musify.common.handler.AnimationAutoTextScroller
+import com.shahtott.sh_musify.common.extentions.startAutoTextScrolling
 import com.shahtott.sh_musify.databinding.FragmentPlayingBinding
 
 
@@ -26,26 +26,24 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.fragment_playing, container, false)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         scrollNameOfSongHorizontally()
+
     }
 
     private fun scrollNameOfSongHorizontally() {
         val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = resources.displayMetrics.widthPixels.toFloat()
 
-        val width = displayMetrics.widthPixels
+        val scrollertextview: TextView = requireActivity().findViewById(R.id.txt__details_song_name)
+        scrollertextview.startAutoTextScrolling(screenWidth, 10000, "Your scrolling text here")
 
-        val scrollertextview: TextView = requireActivity().findViewById(R.id.txt_song_name)
-        val textscroller = AnimationAutoTextScroller(scrollertextview, width.toFloat())
-        textscroller.setScrollingText(scrollertextview.text.toString())
-        textscroller.start()
     }
 
 }
