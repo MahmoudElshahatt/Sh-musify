@@ -9,7 +9,6 @@ import android.widget.TextView
 import com.shahtott.sh_musify.R
 import com.shahtott.sh_musify.common.core.BaseFragment
 import com.shahtott.sh_musify.common.extentions.showContentAboveStatusBar
-import com.shahtott.sh_musify.common.extentions.startAutoTextScrolling
 import com.shahtott.sh_musify.databinding.FragmentPlayingBinding
 
 
@@ -42,7 +41,7 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
         val screenWidth = resources.displayMetrics.widthPixels.toFloat()
 
         val scrollertextview: TextView = requireActivity().findViewById(R.id.txt__details_song_name)
-        scrollertextview.startAutoTextScrolling(screenWidth, 10000, "Your scrolling text here")
+        scrollertextview.startAutoTextHorizentalScrolling(screenWidth, 10000, "Your scrolling text here")
 
     }
 
