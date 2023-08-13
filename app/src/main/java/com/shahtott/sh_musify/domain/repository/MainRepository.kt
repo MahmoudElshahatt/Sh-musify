@@ -56,4 +56,7 @@ class MainRepository @Inject constructor(
     override suspend fun updateLastSaveTime(timeStamp: Long) {
         sharedPref.write(SharedPrefManager.LAST_FETCH, timeStamp)
     }
+
+
+    fun getMusicEntityById(id:Long)=musicDao.getMusicEntityById(id)
 }

@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="117dp" />
+        app:layout_constraintGuide_begin="88dp" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/music_albumArt"
@@ -65,15 +65,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:text="TextViewTextViewTextView"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="22sp"
+            tools:text="TextViewTextViewTextView" />
     </HorizontalScrollView>
-    <!--    <ImageButton-->
-    <!--        android:layout_width="@dimen/_25sdp"-->
-    <!--        android:layout_height="@dimen/_25sdp"-->
-    <!--        android:src="@drawable/ic_play"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+
+    <ImageView
+        android:id="@+id/imageButton"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:background="@null"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:layout_constraintVertical_bias="0.19" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
