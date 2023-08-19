@@ -2,7 +2,9 @@ package com.shahtott.sh_musify.ui.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shahtott.sh_musify.R
@@ -36,7 +38,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().showContentNormallyUnderStatusBar(R.color.main_color)
         setUpAdapter()
         observations()
     }

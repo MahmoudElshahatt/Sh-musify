@@ -12,7 +12,10 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_playingFragment"
-            app:destination="@id/playingFragment" />
+            app:destination="@id/playingFragment"
+            app:enterAnim="@anim/join_bottom"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"/>
     </fragment>
     <fragment
         android:id="@+id/playingFragment"

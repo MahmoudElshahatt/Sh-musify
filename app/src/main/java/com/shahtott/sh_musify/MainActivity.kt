@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.shahtott.sh_musify.common.extentions.showContentAboveStatusBar
 import com.shahtott.sh_musify.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         installSplashScreen()
+        showContentAboveStatusBar()
         setContentView(binding.root)
     }
 

@@ -1,20 +1,21 @@
 package com.shahtott.sh_musify.ui.playing
 
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.shahtott.sh_musify.R
 import com.shahtott.sh_musify.common.core.BaseFragment
-import com.shahtott.sh_musify.common.extentions.showContentAboveStatusBar
-import com.shahtott.sh_musify.common.extentions.showToast
+import com.shahtott.sh_musify.common.extentions.onBackPress
 import com.shahtott.sh_musify.common.handler.MainAudioPlayer
-import com.shahtott.sh_musify.common.handler.MainAudioPlayer.seekToPlayBackPosition
-import com.shahtott.sh_musify.common.handler.MainAudioPlayer.savePlayBackPosition
 import com.shahtott.sh_musify.common.handler.MainAudioPlayer.togglePlayPauseBtn
+import com.shahtott.sh_musify.common.handler.MusicHandler
 import com.shahtott.sh_musify.common.handler.startAutoTextHorizontalScrolling
-import com.shahtott.sh_musify.data.local.SharedPrefManager.Companion.PLAY_BACK_TIME
 import com.shahtott.sh_musify.databinding.FragmentPlayingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,12 +28,23 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().showContentAboveStatusBar()
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        onBackPress {
+            MainAudioPlayer.resetPlayer()
+            findNavController().navigateUp()
+        }
         onClickListeners()
         observations()
 
@@ -41,6 +53,10 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
     private fun observations() {
         binding.apply {
             viewModel.musicEntity.observe(viewLifecycleOwner) { song ->
+
+                setSongImage(
+                    MusicHandler.decodeBase64AndReturnBitmap(song.imageBytes)
+                )
                 scrollNameOfSongHorizontally(song.title)
                 MainAudioPlayer.playAudio(
                     context = requireContext(),
@@ -59,11 +75,11 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        sharedPref.savePlayBackPosition()
+    private fun setSongImage(url: Bitmap) {
+        Glide.with(this).load(url).placeholder(R.drawable.ic_music)
+            .centerCrop()
+            .into(binding.musicAlbumArt)
     }
-
 
 
     private fun onClickListeners() {

@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -36,7 +37,6 @@ object MainAudioPlayer {
     private var mSeekBarUpdateHandler: Handler? = null
     private var mUpdateSeekBar: Runnable? = null
     private var isPlayingPlaylist = false
-    var playBackPosition: Long = 0L
 
     fun SharedPrefManager.savePlayBackPosition() {
         if (!nowPlayingAudio.isNullOrEmpty()) {
@@ -45,10 +45,6 @@ object MainAudioPlayer {
                 exoPlayer?.currentPosition ?: 0L
             )
         }
-    }
-
-    fun SharedPrefManager.seekToPlayBackPosition() {
-
     }
 
 
@@ -330,7 +326,6 @@ object MainAudioPlayer {
                                 seekBar, (exoPlayer?.duration ?: 0).toInt(), textTvToUpdate
                             )
                             updateSeekBar(seekBar, textTvToUpdate)
-
                             totalTimeTv?.text = createTimeLabel(exoPlayer?.duration ?: 0)
                         }
                         //onComplete
@@ -413,6 +408,26 @@ object MainAudioPlayer {
 
         val value = "%02d:%02d".format(min, sec)
         return if (value.length == 5) value else ""
+    }
+
+    fun updateSeekBarFromExoPlayerPosition(
+        seekBar: SeekBar?,
+        position: Long,
+    ) {
+        val duration = exoPlayer?.duration
+        duration?.let { duration ->
+            if (duration != C.TIME_UNSET && duration > 0) {
+                val progress = (position * 100 / duration).toInt()
+                seekBar?.progress = progress
+            }
+        }
+    }
+
+    fun resetPlayer() {
+        nowPlayingAudio = ""
+        mUpdateSeekBar?.let { mSeekBarUpdateHandler?.removeCallbacks(it) }
+        exoPlayer?.stop()
+        exoPlayer = null
     }
 
 }
