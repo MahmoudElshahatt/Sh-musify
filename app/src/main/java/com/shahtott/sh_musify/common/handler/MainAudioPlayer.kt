@@ -407,7 +407,11 @@ object MainAudioPlayer {
         val sec = time / 1000 % 60
 
         val value = "%02d:%02d".format(min, sec)
-        return if (value.length == 5) value else ""
+        return if (value.length == 5) value else {
+            val h = time / 1000 / 60 / 60
+            val min = time / 1000 % 60
+            "%02d:%02d:%02d".format(h, min, sec)
+        }
     }
 
     fun updateSeekBarFromExoPlayerPosition(

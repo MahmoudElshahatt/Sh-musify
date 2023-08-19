@@ -24,12 +24,6 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
     FragmentPlayingBinding::inflate
 ) {
     private val viewModel: PlayingViewModel by viewModels()
-    private val playingSoundUri: String = ""
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
