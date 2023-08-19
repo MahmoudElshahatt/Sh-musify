@@ -86,11 +86,12 @@
         app:layout_constraintVertical_bias="0.19">
 
         <ImageView
-            android:id="@+id/imageButton"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
+            android:id="@+id/play_pause_btn"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_gravity="center"
             android:background="@null"
+            android:clickable="true"
             android:src="@drawable/ic_pause"
             app:tint="@color/main_color" />
     </androidx.cardview.widget.CardView>
@@ -106,7 +107,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView"
-        app:tint="@color/main_color" />
+        app:tint="#E6FFFFFF" />
 
     <ImageView
         android:layout_width="@dimen/_30sdp"
@@ -118,5 +119,28 @@
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintEnd_toStartOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView"
-        app:tint="@color/main_color" />
+        app:tint="#E6FFFFFF"
+      />
+
+    <TextView
+        android:id="@+id/txt_total_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        tools:text="20:00" />
+
+    <TextView
+        android:id="@+id/txt_time_to_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        tools:text="10:00" />
 </androidx.constraintlayout.widget.ConstraintLayout>

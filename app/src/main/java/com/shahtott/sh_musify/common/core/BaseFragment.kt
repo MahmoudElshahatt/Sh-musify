@@ -7,12 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
+import com.shahtott.sh_musify.data.local.SharedPrefManager
+import javax.inject.Inject
 
 
 abstract class BaseFragment<VB : ViewBinding>(
     private val layoutInflater: (inflater: LayoutInflater) -> VB,
 ) : Fragment() {
 
+    @Inject
+    lateinit var sharedPref: SharedPrefManager
 
     private var _binding: VB? = null
     val binding: VB

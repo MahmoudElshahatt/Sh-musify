@@ -1,16 +1,20 @@
 package com.shahtott.sh_musify.ui.playing
 
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.shahtott.sh_musify.R
 import com.shahtott.sh_musify.common.core.BaseFragment
 import com.shahtott.sh_musify.common.extentions.showContentAboveStatusBar
+import com.shahtott.sh_musify.common.extentions.showToast
+import com.shahtott.sh_musify.common.handler.MainAudioPlayer
+import com.shahtott.sh_musify.common.handler.MainAudioPlayer.seekToPlayBackPosition
+import com.shahtott.sh_musify.common.handler.MainAudioPlayer.savePlayBackPosition
+import com.shahtott.sh_musify.common.handler.MainAudioPlayer.togglePlayPauseBtn
 import com.shahtott.sh_musify.common.handler.startAutoTextHorizontalScrolling
+import com.shahtott.sh_musify.data.local.SharedPrefManager.Companion.PLAY_BACK_TIME
 import com.shahtott.sh_musify.databinding.FragmentPlayingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,6 +23,7 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
     FragmentPlayingBinding::inflate
 ) {
     private val viewModel: PlayingViewModel by viewModels()
+    private val playingSoundUri: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,24 +39,52 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
     }
 
     private fun observations() {
-        viewModel.musicEntity.observe(viewLifecycleOwner) { song ->
-            scrollNameOfSongHorizontally(song.title)
+        binding.apply {
+            viewModel.musicEntity.observe(viewLifecycleOwner) { song ->
+                scrollNameOfSongHorizontally(song.title)
+                MainAudioPlayer.playAudio(
+                    context = requireContext(),
+                    audioPath = song.data,
+                    seekBar = seekBar,
+                    playPauseBtn = playPauseBtn,
+                    R.drawable.ic_pause,
+                    R.drawable.ic_play,
+                    txtTimeToUpdate,
+                    txtTotalTime,
+                    onComplete = {
+                        requireActivity().showToast(getString(R.string.the_song_is_completed))
+                    },
+                )
+            }
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        sharedPref.savePlayBackPosition()
+    }
+
+
+
     private fun onClickListeners() {
         binding.apply {
-
+            playPauseBtn.setOnClickListener {
+                togglePlayPauseBtn(
+                    playPauseBtn = playPauseBtn,
+                    R.drawable.ic_pause,
+                    R.drawable.ic_play,
+                )
+            }
         }
     }
 
     private fun scrollNameOfSongHorizontally(text: String) {
         val screenWidth = resources.displayMetrics.widthPixels.toFloat()
-
-        val scrollertextview: TextView = requireActivity().findViewById(R.id.txt__details_song_name)
+        val scrollertextview: TextView =
+            requireActivity().findViewById(R.id.txt__details_song_name)
         scrollertextview.startAutoTextHorizontalScrolling(
             screenWidth,
-            13000,
+            15000,
             text
         )
 

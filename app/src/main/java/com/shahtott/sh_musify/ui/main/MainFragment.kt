@@ -29,7 +29,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().showContentNormallyUnderStatusBar(R.color.main_color)
         checkMusicPermissions(onPermissionGranted = {
             viewModel.fetchMusic()
         })
@@ -37,6 +36,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().showContentNormallyUnderStatusBar(R.color.main_color)
         setUpAdapter()
         observations()
     }

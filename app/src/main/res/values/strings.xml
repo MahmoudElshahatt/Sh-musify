@@ -2,4 +2,5 @@
     <string name="app_name">Musify</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="the_song_is_completed">The song is completed</string>
 </resources>

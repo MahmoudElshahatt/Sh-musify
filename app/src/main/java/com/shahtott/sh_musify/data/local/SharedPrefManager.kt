@@ -15,6 +15,7 @@ class SharedPrefManager @Inject constructor(
     companion object {
         private const val SHARED_PREFERENCES_NAME = "sh_musify_app"
         const val LAST_FETCH = "LAST_FETCH"
+        const val PLAY_BACK_TIME = "PLAY_BACK_TIME"
     }
 
     fun read(key: String?, defValue: Long): Long {

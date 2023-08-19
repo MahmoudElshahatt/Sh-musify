@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Color
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 
 fun Activity.showContentAboveStatusBar(color: Int = -1) {
@@ -25,4 +26,10 @@ fun Activity.showContentNormallyUnderStatusBar(color: Int) {
         statusBarColor = ContextCompat.getColor(this@showContentNormallyUnderStatusBar, color)
         clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
     }
+}
+
+fun Activity.showToast(
+    message: String
+) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
