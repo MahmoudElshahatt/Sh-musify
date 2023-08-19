@@ -97,7 +97,7 @@
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/iv_next_song"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
         android:layout_gravity="center"
@@ -110,6 +110,7 @@
         app:tint="#E6FFFFFF" />
 
     <ImageView
+        android:id="@+id/iv_prev_song"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
         android:layout_gravity="center"

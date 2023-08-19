@@ -52,7 +52,7 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
                     txtTimeToUpdate,
                     txtTotalTime,
                     onComplete = {
-                        requireActivity().showToast(getString(R.string.the_song_is_completed))
+                        viewModel.onNextSongClick()
                     },
                 )
             }
@@ -74,6 +74,12 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
                     R.drawable.ic_pause,
                     R.drawable.ic_play,
                 )
+            }
+            ivNextSong.setOnClickListener {
+                viewModel.onNextSongClick()
+            }
+            ivPrevSong.setOnClickListener {
+                viewModel.onPrevSongClick()
             }
         }
     }

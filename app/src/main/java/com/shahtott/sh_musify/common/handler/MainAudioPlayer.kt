@@ -290,7 +290,6 @@ object MainAudioPlayer {
         @DrawableRes pauseIconRes: Int? = null,
         textTvToUpdate: TextView? = null,
         totalTimeTv: TextView? = null,
-        progressBar: ProgressBar? = null,
         onLoading: (() -> Unit)? = null,
         onError: (() -> Unit)? = null,
         onComplete: (() -> Unit)? = null,
@@ -300,7 +299,9 @@ object MainAudioPlayer {
             isPlayingPlaylist = false
 
             //to pause any audio
-            if (exoPlayer?.isPlaying == true) exoPlayer?.stop()
+            if (exoPlayer?.isPlaying == true) exoPlayer?.pause()
+
+            seekBar?.progress = 0
 
             nowPlayingAudio = audioPath
             exoPlayer = ExoPlayer.Builder(context).build()
@@ -323,7 +324,6 @@ object MainAudioPlayer {
                         //onPrepared
                         Player.STATE_READY -> {
                             playPauseBtn?.visibility = View.VISIBLE
-                            progressBar?.visibility = View.INVISIBLE
                             playingIconRes?.let { playPauseBtn?.setImageResource(it) }
 
                             prepareAndListenToPositionSeekBarChanges(
@@ -352,7 +352,7 @@ object MainAudioPlayer {
         pauseIconRes?.let { playPauseBtn?.setImageResource(it) }
         nowPlayingAudio = ""
         mUpdateSeekBar?.let { mSeekBarUpdateHandler?.removeCallbacks(it) }
-        exoPlayer?.stop()
+        exoPlayer?.pause()
     }
 
     fun togglePlayPauseBtn(
@@ -362,11 +362,11 @@ object MainAudioPlayer {
     ) {
         if (exoPlayer?.isPlaying == true) {
             exoPlayer?.pause()
-            playPauseBtn?.animate()?.alpha(1f)?.duration=1000
+            playPauseBtn?.animate()?.alpha(1f)?.duration = 1000
             pauseIconRes?.let { playPauseBtn?.setImageResource(it) }
         } else {
             exoPlayer?.play()
-            playPauseBtn?.animate()?.alpha(1f)?.duration=1000
+            playPauseBtn?.animate()?.alpha(1f)?.duration = 1000
             playingIconRes?.let { playPauseBtn?.setImageResource(it) }
         }
     }
