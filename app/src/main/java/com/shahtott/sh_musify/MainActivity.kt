@@ -1,9 +1,7 @@
 package com.shahtott.sh_musify
 
-import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.shahtott.sh_musify.common.extentions.showContentAboveStatusBar
 import com.shahtott.sh_musify.databinding.ActivityMainBinding
