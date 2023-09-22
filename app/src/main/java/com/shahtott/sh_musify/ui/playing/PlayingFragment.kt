@@ -1,10 +1,9 @@
 package com.shahtott.sh_musify.ui.playing
 
 import android.graphics.Bitmap
+import android.media.session.MediaSession
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,11 +12,11 @@ import com.shahtott.sh_musify.R
 import com.shahtott.sh_musify.common.core.BaseFragment
 import com.shahtott.sh_musify.common.extentions.onBackPress
 import com.shahtott.sh_musify.common.handler.MainAudioPlayer
-import com.shahtott.sh_musify.common.handler.MainAudioPlayer.togglePlayPauseBtn
 import com.shahtott.sh_musify.common.handler.MusicHandler
 import com.shahtott.sh_musify.common.handler.startAutoTextHorizontalScrolling
 import com.shahtott.sh_musify.databinding.FragmentPlayingBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
@@ -25,18 +24,14 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
 ) {
     private val viewModel: PlayingViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
+    @Inject
+    lateinit var myPlayer: MainAudioPlayer
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onBackPress {
-            MainAudioPlayer.resetPlayer()
+            myPlayer.resetPlayer()
             findNavController().navigateUp()
         }
         onClickListeners()
@@ -52,7 +47,7 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
                     MusicHandler.decodeBase64AndReturnBitmap(song.imageBytes)
                 )
                 scrollNameOfSongHorizontally(song.title)
-                MainAudioPlayer.playAudio(
+                myPlayer.playAudio(
                     context = requireContext(),
                     audioPath = song.data,
                     seekBar = seekBar,
@@ -79,7 +74,7 @@ class PlayingFragment : BaseFragment<FragmentPlayingBinding>(
     private fun onClickListeners() {
         binding.apply {
             playPauseBtn.setOnClickListener {
-                togglePlayPauseBtn(
+                myPlayer.togglePlayPauseBtn(
                     playPauseBtn = playPauseBtn,
                     R.drawable.ic_pause,
                     R.drawable.ic_play,

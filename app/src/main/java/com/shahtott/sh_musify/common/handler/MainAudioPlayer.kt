@@ -1,13 +1,11 @@
 package com.shahtott.sh_musify.common.handler
 
-import android.app.Activity
 import android.content.Context
+import android.media.session.MediaSession
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.DrawableRes
@@ -15,21 +13,20 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
-import com.shahtott.sh_musify.common.extentions.showToast
 import com.shahtott.sh_musify.common.extentions.tryNow
-import com.shahtott.sh_musify.data.local.SharedPrefManager
-
+import javax.inject.Inject
 
 
 /**
  * This object used to:
  * 00- play audio
  */
-object MainAudioPlayer {
+class MainAudioPlayer(private val exoPlayer: Player) {
 
-    private const val tag = "MAudioPlayer"
-    private var exoPlayer: ExoPlayer? = null
+    private val tag = "MAudioPlayer"
+
+    @Inject
+    lateinit var mediaSession: MediaSession
     private var nowPlayingAudio: String? = ""
     private var mSeekBarUpdateHandler: Handler? = null
     private var mUpdateSeekBar: Runnable? = null
@@ -77,7 +74,6 @@ object MainAudioPlayer {
             seekBar?.progress = 0
 
             nowPlayingAudio = audioPath
-            exoPlayer = ExoPlayer.Builder(context).build()
             exoPlayer?.playWhenReady = true
 
             // Build the media item.
@@ -208,7 +204,6 @@ object MainAudioPlayer {
         nowPlayingAudio = ""
         mUpdateSeekBar?.let { mSeekBarUpdateHandler?.removeCallbacks(it) }
         exoPlayer?.stop()
-        exoPlayer = null
     }
 
 }
