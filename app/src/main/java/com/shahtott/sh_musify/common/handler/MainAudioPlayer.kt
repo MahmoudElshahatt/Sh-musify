@@ -69,18 +69,18 @@ class MainAudioPlayer(private val exoPlayer: Player) {
             isPlayingPlaylist = false
 
             //to pause any audio
-            if (exoPlayer?.isPlaying == true) exoPlayer?.pause()
+            if (exoPlayer.isPlaying) exoPlayer.pause()
 
             seekBar?.progress = 0
 
             nowPlayingAudio = audioPath
-            exoPlayer?.playWhenReady = true
+            exoPlayer.playWhenReady = true
 
             // Build the media item.
             val mediaItem = MediaItem.fromUri(nowPlayingAudio ?: "")
-            exoPlayer?.setMediaItem(mediaItem)
-            exoPlayer?.prepare()
-            exoPlayer?.addListener(object : Player.Listener {
+            exoPlayer.setMediaItem(mediaItem)
+            exoPlayer.prepare()
+            exoPlayer.addListener(object : Player.Listener {
                 override fun onPlayerError(error: PlaybackException) {
                     super.onPlayerError(error)
                     onError?.invoke()
@@ -96,10 +96,10 @@ class MainAudioPlayer(private val exoPlayer: Player) {
                             playingIconRes?.let { playPauseBtn?.setImageResource(it) }
 
                             prepareAndListenToPositionSeekBarChanges(
-                                seekBar, (exoPlayer?.duration ?: 0).toInt(), textTvToUpdate
+                                seekBar, (exoPlayer.duration ).toInt(), textTvToUpdate
                             )
                             updateSeekBar(seekBar, textTvToUpdate)
-                            totalTimeTv?.text = createTimeLabel(exoPlayer?.duration ?: 0)
+                            totalTimeTv?.text = createTimeLabel(exoPlayer.duration)
                         }
                         //onComplete
                         Player.STATE_ENDED -> {
@@ -112,7 +112,8 @@ class MainAudioPlayer(private val exoPlayer: Player) {
                     }
                 }
             })
-            exoPlayer?.play()
+            exoPlayer.play()
+
         }
     }
 
@@ -120,7 +121,7 @@ class MainAudioPlayer(private val exoPlayer: Player) {
         pauseIconRes?.let { playPauseBtn?.setImageResource(it) }
         nowPlayingAudio = ""
         mUpdateSeekBar?.let { mSeekBarUpdateHandler?.removeCallbacks(it) }
-        exoPlayer?.pause()
+        exoPlayer.pause()
     }
 
     fun togglePlayPauseBtn(
@@ -128,12 +129,12 @@ class MainAudioPlayer(private val exoPlayer: Player) {
         @DrawableRes playingIconRes: Int? = null,
         @DrawableRes pauseIconRes: Int? = null,
     ) {
-        if (exoPlayer?.isPlaying == true) {
-            exoPlayer?.pause()
+        if (exoPlayer.isPlaying) {
+            exoPlayer.pause()
             playPauseBtn?.animate()?.alpha(1f)?.duration = 1000
             pauseIconRes?.let { playPauseBtn?.setImageResource(it) }
         } else {
-            exoPlayer?.play()
+            exoPlayer.play()
             playPauseBtn?.animate()?.alpha(1f)?.duration = 1000
             playingIconRes?.let { playPauseBtn?.setImageResource(it) }
         }
@@ -149,8 +150,8 @@ class MainAudioPlayer(private val exoPlayer: Player) {
             override fun onProgressChanged(p0: SeekBar?, progress: Int, p2: Boolean) {
                 if (p2) {
                     seekBar.progress = progress
-                    exoPlayer?.seekTo(progress.toLong())
-                    exoPlayer?.play()
+                    exoPlayer.seekTo(progress.toLong())
+                    exoPlayer.play()
                     textTvToUpdate?.text = createTimeLabel(progress.toLong())
                 }
             }
@@ -191,8 +192,8 @@ class MainAudioPlayer(private val exoPlayer: Player) {
         seekBar: SeekBar?,
         position: Long,
     ) {
-        val duration = exoPlayer?.duration
-        duration?.let { duration ->
+        val duration = exoPlayer.duration
+        duration.let { duration ->
             if (duration != C.TIME_UNSET && duration > 0) {
                 val progress = (position * 100 / duration).toInt()
                 seekBar?.progress = progress
@@ -203,7 +204,7 @@ class MainAudioPlayer(private val exoPlayer: Player) {
     fun resetPlayer() {
         nowPlayingAudio = ""
         mUpdateSeekBar?.let { mSeekBarUpdateHandler?.removeCallbacks(it) }
-        exoPlayer?.stop()
+        exoPlayer.stop()
     }
 
 }
