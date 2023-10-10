@@ -15,17 +15,17 @@ Sh-musify is a music app that plays audio with foreground service files with out
 
 Book Shelf is built using the following cutting-edge technologies:
 
-* Retrofit: Efficient network requests and data retrieval for seamless book data integration.
+* Media 3: The new home for media libraries that enables Android apps to display rich audio and visual experiences.
 * Hilt: Dependency injection for clean and modular code.
 * SharedPreferences: Manage user preferences and settings efficiently.
 * Room database: Robust local data storage and caching for uninterrupted offline access.
 * MVVM architecture: Well-structured and maintainable codebase.
-* Splash Screen: Create an engaging and visually appealing launch experience using the Splash Screen API.
+* Splash Screen 12: Create an engaging and visually appealing launch experience using the Splash Screen API.
 * Glide: Effortlessly load and display book cover images with optimized caching and memory management.
 
 ## Installation
 
-1. Clone the repository: git clone `https://github.com/MahmoudElshahatt/BookShelf.git`
+1. Clone the repository: git clone `https://github.com/MahmoudElshahatt/Sh-musify.git`
 2. Open the project in Android Studio.
 3. Build and run the app on your Android device or emulator.
 
