@@ -2,6 +2,7 @@
 
 Sh-musify is a music app that plays audio with foreground service files with outstanding UI.
 
+<img src="https://github.com/MahmoudElshahatt/Quizz_app/assets/79477855/e9f2064a-2ad7-40cd-83c6-48ee6edecc1a.mp4" width="350" height="700">
 
 ## App Preview
 
