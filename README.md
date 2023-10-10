@@ -1,6 +1,6 @@
 # Sh-musify
 
-Sh-musify is a music app that plays audio with foreground service files with outstanding UI.
+Sh-musify is a music app that plays music files from your device with foreground service with outstanding UI..
 
 
 ## App Preview
