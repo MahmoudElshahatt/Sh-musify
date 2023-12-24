@@ -1,6 +1,6 @@
 # Sh-musify
 
-Sh-musify is a music app that plays music files from your device with foreground service with outstanding UI..
+Sh-musify is a music app that plays music files from your device with foreground service with outstanding UI.
 
 
 ## App Preview
@@ -20,7 +20,7 @@ https://github.com/MahmoudElshahatt/Sh-musify/assets/79477855/1b2706b0-ea29-41a5
 
 ## Tech Stack
 
-Book Shelf is built using the following cutting-edge technologies:
+Sh-musify is built using the following cutting-edge technologies:
 
 * Media 3: The new home for media libraries that enables Android apps to display rich audio and visual experiences.
 * Hilt: Dependency injection for clean and modular code.
